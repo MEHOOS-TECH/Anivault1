@@ -1,0 +1,9 @@
+{
+  "name": "anivault",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.540.0",
+    "formidable": "^3.5.1"
+  }
+}
