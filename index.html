@@ -1,1 +1,270 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniVault — Anime Streaming</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #050816;
+      color: white;
+      overflow-x: hidden;
+    }.glass {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
 
+.anime-card:hover {
+  transform: translateY(-6px);
+  transition: 0.3s;
+}
+
+video::-webkit-media-controls-download-button {
+  display: none;
+}
+
+  </style>
+</head>
+<body>  <!-- NAVBAR -->  <header class="fixed top-0 left-0 w-full z-50 glass">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <h1 class="text-3xl font-bold text-purple-400">AniVault</h1><nav class="hidden md:flex gap-8 text-sm">
+    <a href="#home" class="hover:text-purple-400">Home</a>
+    <a href="#trending" class="hover:text-purple-400">Trending</a>
+    <a href="#library" class="hover:text-purple-400">Library</a>
+    <a href="#upload" class="hover:text-purple-400">Upload</a>
+  </nav>
+</div>
+
+  </header>  <!-- HERO -->  <section id="home" class="min-h-screen flex items-center justify-center px-6">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center"><div>
+    <h2 class="text-6xl font-black leading-tight mb-6">
+      Stream & Download
+      <span class="text-purple-400">Anime</span>
+    </h2>
+
+    <p class="text-gray-300 text-lg mb-8">
+      Fast streaming powered by Cloudflare R2 + Vercel.
+      Upload episodes, watch instantly, and download on mobile.
+    </p>
+
+    <div class="flex gap-4">
+      <button class="bg-purple-500 hover:bg-purple-600 px-8 py-4 rounded-2xl font-bold">
+        Start Watching
+      </button>
+
+      <button class="glass px-8 py-4 rounded-2xl font-bold">
+        Explore Library
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <img
+      src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200&auto=format&fit=crop"
+      class="rounded-3xl shadow-2xl w-full"
+    />
+  </div>
+
+</div>
+
+  </section>  <!-- TRENDING -->  <section id="trending" class="py-20 px-6">
+    <div class="max-w-7xl mx-auto"><div class="flex items-center justify-between mb-10">
+    <h3 class="text-4xl font-black">Trending Anime</h3>
+
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search anime..."
+      class="bg-black/40 border border-white/10 rounded-xl px-4 py-3 w-64"
+    />
+  </div>
+
+  <div id="animeGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+  </div>
+</div>
+
+  </section>  <!-- VIDEO PLAYER -->  <section class="py-20 px-6">
+    <div class="max-w-6xl mx-auto glass rounded-3xl p-8"><div class="flex items-center justify-between mb-6">
+    <h3 class="text-3xl font-black">Now Playing</h3>
+
+    <a
+      id="downloadBtn"
+      href="#"
+      download
+      class="bg-purple-500 px-6 py-3 rounded-xl font-bold"
+    >
+      Download Episode
+    </a>
+  </div>
+
+  <video
+    id="videoPlayer"
+    controls
+    class="w-full rounded-2xl"
+    poster="https://images.unsplash.com/photo-1541560052-77ec1bbc09f7?q=80&w=1200&auto=format&fit=crop"
+  >
+    <source
+      src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      type="video/mp4"
+    />
+  </video>
+
+</div>
+
+  </section>  <!-- UPLOAD -->  <section id="upload" class="py-20 px-6">
+    <div class="max-w-4xl mx-auto glass rounded-3xl p-10"><h3 class="text-4xl font-black mb-6">Upload Anime Episode</h3>
+
+  <p class="text-gray-400 mb-8">
+    Upload directly into Cloudflare R2 through your Vercel API.
+  </p>
+
+  <input
+    type="file"
+    id="videoFile"
+    accept="video/*"
+    class="mb-6 block w-full"
+  />
+
+  <button
+    onclick="uploadVideo()"
+    class="bg-purple-500 hover:bg-purple-600 px-8 py-4 rounded-2xl font-bold"
+  >
+    Upload Video
+  </button>
+
+  <div id="uploadStatus" class="mt-6 text-green-400"></div>
+
+</div>
+
+  </section>  <!-- FOOTER -->  <footer class="py-10 text-center text-gray-500 border-t border-white/10 mt-20">
+    AniVault © 2026 — Powered by Cloudflare R2 + Vercel
+  </footer>  <script>
+
+    const animeData = [
+      {
+        title: "Solo Leveling",
+        image: "https://images.unsplash.com/photo-1618336753974-aae8e04506aa?q=80&w=800&auto=format&fit=crop",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      },
+      {
+        title: "Attack on Titan",
+        image: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=800&auto=format&fit=crop",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+      },
+      {
+        title: "Jujutsu Kaisen",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"
+      },
+      {
+        title: "Demon Slayer",
+        image: "https://images.unsplash.com/photo-1522199710521-72d69614c702?q=80&w=800&auto=format&fit=crop",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+      }
+    ];
+
+    const animeGrid = document.getElementById("animeGrid");
+    const player = document.getElementById("videoPlayer");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    function renderAnime(list) {
+      animeGrid.innerHTML = "";
+
+      list.forEach(anime => {
+        animeGrid.innerHTML += `
+          <div class="anime-card glass rounded-3xl overflow-hidden cursor-pointer"
+            onclick="playAnime('${anime.video}')">
+
+            <img src="${anime.image}" class="h-64 w-full object-cover" />
+
+            <div class="p-5">
+              <h4 class="text-xl font-bold">${anime.title}</h4>
+            </div>
+
+          </div>
+        `;
+      });
+    }
+
+    renderAnime(animeData);
+
+    function playAnime(url) {
+      player.src = url;
+      downloadBtn.href = url;
+      player.play();
+
+      window.scrollTo({
+        top: player.offsetTop - 100,
+        behavior: "smooth"
+      });
+    }
+
+    document.getElementById("searchInput").addEventListener("input", e => {
+
+      const value = e.target.value.toLowerCase();
+
+      const filtered = animeData.filter(a =>
+        a.title.toLowerCase().includes(value)
+      );
+
+      renderAnime(filtered);
+
+    });
+
+    async function uploadVideo() {
+
+      const fileInput = document.getElementById("videoFile");
+      const status = document.getElementById("uploadStatus");
+
+      if (!fileInput.files.length) {
+        alert("Please select a video file.");
+        return;
+      }
+
+      status.innerHTML = "Uploading...";
+
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      try {
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+          status.innerHTML = `
+            Upload successful.<br>
+            Video URL:<br>
+            <a href="${data.url}" target="_blank" class="text-blue-400 underline">
+              ${data.url}
+            </a>
+          `;
+
+          animeData.unshift({
+            title: "New Upload",
+            image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop",
+            video: data.url
+          });
+
+          renderAnime(animeData);
+
+        } else {
+          status.innerHTML = "Upload failed.";
+        }
+
+      } catch (error) {
+        console.error(error);
+        status.innerHTML = "Server error.";
+      }
+
+    }
+
+  </script></body>
+</html>
